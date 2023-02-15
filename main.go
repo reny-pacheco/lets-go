@@ -4,27 +4,73 @@ import (
 	"fmt"
 )
 
-// expample form w3schools.com/go
+// Source: https://www.digitalocean.com/community/tutorials/how-to-construct-for-loops-in-go
 
 func main() {
-	day := 4
+	// with initialization
+	for i := 0; i < 5; i++ {
+		fmt.Println(i)
+	}
 
-	switch day {
-	case 1:
-		fmt.Println("Monday")
-	case 2:
-		fmt.Println("Tuesday")
-	case 3:
-		fmt.Println("Wednesday")
-	case 4:
-		fmt.Println("Thursday")
-	case 5:
-		fmt.Println("Friday")
-	case 6:
-		fmt.Println("Saturday")
-	case 7:
-		fmt.Println("Sunday")
-	default:
-		fmt.Println("Not a weekday")
+	// without initialization
+	x := 0
+	for x < 5 {
+		fmt.Println(x)
+		x++
+	}
+	// using a break statement
+	for num := 0; num < 5; num++ {
+		if num == 2 {
+			fmt.Println("Number is 2, breaking...")
+			break
+		}
+		fmt.Println(num)
+	}
+
+	// iterating an slice using the ForClause
+	sharks := []string{"hammerhead", "great white", "dogfish", "frilled", "bullhead", "requiem"}
+
+	for i := 0; i < len(sharks); i++ {
+		fmt.Println(sharks[i])
+	}
+
+	// iteratinga an slice using the RangeClause
+	for i, shark := range sharks {
+		fmt.Println(i, shark)
+	}
+
+	// using a blank identifier (_)
+	for _, shark := range sharks {
+		fmt.Println(shark)
+	}
+
+	// adding items to list using range
+	for range sharks {
+		sharks = append(sharks, "shark")
+	}
+	fmt.Printf("%q\n", sharks)
+
+	// fill values to a slice using range
+	integers := make([]int, 10)
+	fmt.Println(integers)
+
+	for i := range integers {
+		integers[i] = i
+	}
+	fmt.Println(integers)
+
+	// iterate through each character in a string
+	sammy := "Reny"
+
+	for _, letter := range sammy {
+		fmt.Printf("%c\n", letter)
+	}
+
+	// iterating a map will return both key and value
+	// Note: The order in which a map returns is random
+	sammyShark := map[string]string{"name": "Sammy", "animal": "shark", "color": "blue", "location": "ocean"}
+
+	for key, value := range sammyShark {
+		fmt.Println(key + ": " + value)
 	}
 }
