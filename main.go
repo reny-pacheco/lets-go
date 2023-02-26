@@ -1,56 +1,44 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-func myMessage() {
-	fmt.Println("I just got executed!")
+// intro to pointers
+func pointers() {
+	var creature string = "shark"
+	var pointer *string = &creature
+
+	fmt.Println("creature =", creature)
+	fmt.Println("pointer =", pointer)
+
+	// dereference the pointer
+	fmt.Println("*poiner", *pointer)
+
+	// modify the value stored at the pointer
+	*pointer = "jellyfish"
+	fmt.Println("*poiner", *pointer)
+
+	// value of creature is also modified
+	fmt.Println(creature)
 }
 
-func funcStr(name string) string {
-	return "Hello Guys"
+// function pointer receivers -------------------
+type Creature struct {
+	Species string
 }
 
-func addNums(num1, num2 int) int {
-	return num1 + num2
+// --> Pass by value
+func changeCreature(creature Creature) {
+	creature.Species = "jellyfish"
+	fmt.Printf("2) %+v\n", creature)
 }
 
-func showName(name string) string {
-	return "Hello"
-}
-
-// declaring a type
-type IZ int
-
-// declaring multiple types
-type (
-	IT  int
-	STR string
-)
-
-var name STR = "Reny"
-var amount IT = 1200
-
-// using constants as enums
-const (
-	Male   = 0
-	Female = 1
-)
-
-// auto increment in enums
-const (
-	a = iota
-	b
-	c
-)
+// -----------------------------
 
 func main() {
-	myMessage() // call the function
-	fmt.Println(showName("hello"))
-	fmt.Println(funcStr("hello"))
-	fmt.Println(addNums(2, 3))
-	fmt.Println(name, amount)
-	fmt.Println(Male)
-	fmt.Println(b)
+	// pointers()
+	var creature Creature = Creature{Species: "shark"}
+
+	fmt.Printf("1) %+v\n", creature)
+	changeCreature(creature)
+	fmt.Printf("3) %+v\n", creature)
 }
