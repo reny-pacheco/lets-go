@@ -1,44 +1,98 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-// intro to pointers
-func pointers() {
-	var creature string = "shark"
-	var pointer *string = &creature
+// src: https://www.digitalocean.com/community/tutorials/how-to-use-interfaces-in-go
 
-	fmt.Println("creature =", creature)
-	fmt.Println("pointer =", pointer)
+// type Article struct {
+// 	Title  string
+// 	Author string
+// }
 
-	// dereference the pointer
-	fmt.Println("*poiner", *pointer)
+// func (a Article) String() string {
+// 	return fmt.Sprintf("The %q article was written by %s.", a.Title, a.Author)
+// }
 
-	// modify the value stored at the pointer
-	*pointer = "jellyfish"
-	fmt.Println("*poiner", *pointer)
+// func (a Article) ShowAuthor() {
+// 	fmt.Println(a.Author, "Showing author")
+// }
 
-	// value of creature is also modified
-	fmt.Println(creature)
+// type Stringer interface {
+// 	String() string
+// 	ShowAuthor()
+// }
+
+// func main() {
+// 	a := Article{
+// 		Title:  "Understanding Interfaces in Go",
+// 		Author: "Sammy Shark",
+// 	}
+// 	Print(a)
+// }
+
+// func Print(s Stringer) {
+// 	fmt.Println(s.String())
+// 	s.ShowAuthor()
+// }
+
+// Multiple Behaviors in an Interface
+
+type Circle struct {
+	Radius float64
 }
 
-// function pointer receivers -------------------
-type Creature struct {
-	Species string
+func (c Circle) Area() float64 {
+	return math.Pi * math.Pow(c.Radius, 2)
 }
 
-// --> Pass by value
-func changeCreature(creature Creature) {
-	creature.Species = "jellyfish"
-	fmt.Printf("2) %+v\n", creature)
+func (c Circle) String() string {
+	return fmt.Sprintf("Circle {Radius: %.2f}", c.Radius)
 }
 
-// -----------------------------
+type Square struct {
+	Width  float64
+	Height float64
+}
+
+func (s Square) Area() float64 {
+	return s.Width * s.Height
+}
+
+func (s Square) String() string {
+	return fmt.Sprintf("Square {Width: %.2f, Height: %.2f}", s.Width, s.Height)
+}
+
+type Sizer interface {
+	Area() float64
+}
+
+type Shaper interface {
+	Sizer
+	fmt.Stringer
+}
 
 func main() {
-	// pointers()
-	var creature Creature = Creature{Species: "shark"}
+	c := Circle{Radius: 10}
+	PrintArea(c)
 
-	fmt.Printf("1) %+v\n", creature)
-	changeCreature(creature)
-	fmt.Printf("3) %+v\n", creature)
+	s := Square{Height: 10, Width: 5}
+	PrintArea(s)
+
+	l := Less(c, s)
+	fmt.Printf("%v is the smallest\n", l)
+}
+
+// returns the Sizer interface
+func Less(s1, s2 Sizer) Sizer {
+	if s1.Area() < s2.Area() {
+		return s1
+	}
+	return s2
+}
+
+func PrintArea(s Shaper) {
+	fmt.Printf("area of %s is %.2f\n", s.String(), s.Area())
 }
